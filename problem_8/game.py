@@ -4,6 +4,7 @@ guesses_remaining = 5
 letter = ""
 part_word = ""
 random_word = ""
+word_guessed = False
 
 def greeting():
   print("Let's Play Hangman ¯\\_(ツ)_/¯")
@@ -40,7 +41,6 @@ def take_user_input():
 def wrong_letter(letter):
   """Tell the user their guess was wrong, and prompt them to guess again"""
   print(f"{letter} is not in the word.")
-  # take_user_input()
 
 def update_part_word(letter):
   """Update underscores to replace correctly guessed letters"""
@@ -65,26 +65,26 @@ def guess_word():
 def guess_letter(letter):
   """takes user's letter guess and provides feedback"""
   global guesses_remaining
-
+  global word_guessed
+  # if correct letter guessed, give them a chance to guess the word
+  # if word or letter incorrect, then decrement remaning guesses and prompt again
   if letter.lower() in random_word:
-    # if letter is in word, give them a chance to guess the word
     correct_letter(letter)
     if guess_word():
       print(f"Congrats, the word was {random_word.upper()}")
+      word_guessed = True
     else:
       print("That is not the word.")
-      # take_user_input()
   else:
-    # if guesses_remaining > 0:
       wrong_letter(letter)
-      # print(f"You have {guesses_remaining} guesses remaining")
-  # decrement reamining guesses
+
   guesses_remaining -= 1
-  # print(guesses_remaining)
-  # if no guesses remain, then end game
-  if guesses_remaining == 0:
-    print("you're out of guesses")
-    print(f"the word was {random_word}")
-  else:
-    print(f"You have {guesses_remaining} guesses remaining")
-    take_user_input()
+ 
+  if not word_guessed :
+    # if no guesses remaining, then reveal the word, otherwise remind them how many guesses remain
+    if guesses_remaining == 0:
+      print("you're out of guesses")
+      print(f"the word was {random_word.upper()}")
+    else:
+      print(f"You have {guesses_remaining} guesses remaining")
+      take_user_input()
